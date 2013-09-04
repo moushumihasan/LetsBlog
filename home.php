@@ -12,9 +12,9 @@
     
 
     if (isset($_REQUEST["blog_id"])) {
-    	$blog_id = $_REQUEST["blog_id"];
-		$action = $_REQUEST["action"];
-		$user_id = $_SESSION["user_id"];
+    	$blog_id = intval($_REQUEST["blog_id"]);
+		$action = mysql_real_escape_string($_REQUEST["action"], LINK);
+		$user_id = intval($_SESSION["user_id"]);
 		 
 		$sql = "";
 		switch($action) {
@@ -25,7 +25,7 @@
 				$sql = "DELETE FROM blog_like WHERE `blog_id`=$blog_id AND `user_id`=$user_id";
 				break;
 			case 'add-comment':
-				$blog_comment = $_REQUEST["comment_text"];
+				$blog_comment = mysql_real_escape_string($_REQUEST["comment_text"], LINK);
 				$sql = "INSERT INTO blog_comment (`blog_id`, `user_id`,`comment`, `added_datetime`) VALUES ($blog_id, $user_id, '$blog_comment', NOW())";
 				break;
 		}
@@ -35,9 +35,9 @@
 		}
 		
     } else if (isset($_REQUEST["blog_comment_id"])) {
-    	$blog_comment_id = $_REQUEST["blog_comment_id"];
-		$action = $_REQUEST["action"];
-		$user_id = $_SESSION["user_id"];
+    	$blog_comment_id = intval($_REQUEST["blog_comment_id"]);
+		$action = mysql_real_escape_string($_REQUEST["action"], LINK);
+		$user_id = intval($_SESSION["user_id"]);
 		 
 		$sql = "";
 		switch($action) {
@@ -54,8 +54,8 @@
 		}
 		
     } else if(isset($_POST["form_name"]) && $_POST["form_name"] == 'add_blog') {
-    	$blog_text = $_POST["add_blog"];
-		$user_id = $_SESSION["user_id"];
+    	$blog_text = mysql_real_escape_string($_POST["add_blog"], LINK);
+		$user_id = intval($_SESSION["user_id"]);
     	
     	$sql = "INSERT INTO blog(`user_id`, `blog_text`, `status`,`added_datetime` ) " . 
     			"VALUES($user_id, '$blog_text', 1, NOW())";
