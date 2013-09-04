@@ -13,11 +13,11 @@
     
    if(isset($_POST["form_name"]) && $_POST["form_name"] == 'registration') {
 
-   		$first_name = $_POST["firstName"];
-   		$surname = $_POST["surname"];
-   		$email = $_POST["emailAddress"];
-   		$password = $_POST["passwordReg"];
-   		$gender = $_POST["gender"];
+   		$first_name = mysql_real_escape_string($_POST["firstName"], LINK);
+   		$surname = mysql_real_escape_string($_POST["surname"], LINK);
+   		$email = mysql_real_escape_string($_POST["emailAddress"], LINK);
+   		$password = mysql_real_escape_string($_POST["passwordReg"], LINK);
+   		$gender = intval($_POST["gender"]);
 
    		$sql = "INSERT INTO users(first_name, surname, email, password, gender, status, added_datetime) " . 
      			"VALUES('$first_name', '$surname', '$email', md5('$password'), $gender, 1, NOW())";
@@ -41,8 +41,8 @@
    		}
    		
    } else if(isset($_POST["form_name"]) && $_POST["form_name"] == 'login') {
-   		$email = $_POST["email"];
-   		$password = $_POST["password"];
+   		$email = mysql_real_escape_string($_POST["email"], LINK);
+   		$password = mysql_real_escape_string($_POST["password"], LINK);
    	 	
    		$sql = "SELECT * FROM users WHERE email = '$email' AND password = md5('$password')";
    		$result = mysql_query($sql, LINK);
